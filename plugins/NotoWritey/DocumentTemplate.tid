@@ -1,0 +1,106 @@
+created: 20200528190017746
+modified: 20200627213703856
+tags: kit
+title: DocumentTemplate
+type: text/vnd.tiddlywiki
+
+\define qualify-helper() <<qualify title:"""$:/temp/$(maintag)$""" >>
+\define qualify-restore-helper() <<qualify title:"""$:/temp/$(maintag)$/restore""" >>
+\define maintag-helper() [[$(maintag)$]] 
+\define current-remover() -[[$(currentTiddler)$]]
+\define filt-append() [list[$(maintag)$]] +[putafter:$(count)$<currentTiddler>]
+\define dothese()
+<$vars nav=<<navigateTo>>>
+<$reveal type="nomatch" default=<<currentTiddler>> text=<<nav>> >
+  <$action-navigate $to=<<nav>>/>
+</$reveal>
+<$reveal type="match" default=<<currentTiddler>> text=<<nav>> >
+  <$action-setfield reset={{!!text}} />
+  <$action-setfield $tiddler=<<quali>> $value="edit" />
+</$reveal>
+</$vars>
+\end
+
+<$wikify name="quali" text=<<qualify-helper>> >
+<$reveal state=<<quali>> type="nomatch" text="edit" class="nw-reveal-a" tag="div">
+<$linkcatcher actions=<<dothese>>>
+<$tiddler tiddler=<<currentTiddler>>>
+<$macrocall $name="foldstatus" tag=<<maintag>> curtid=<<currentTiddler>>  origtid=<<currentTiddler>> />
+<!-- $transclude mode="block" -->
+</$tiddler>
+</$linkcatcher>
+</$reveal>
+
+<$reveal state=<<quali>> type="match" text="edit" class="nw-editor">
+{{||$:/core/ui/EditTemplate/body/editor}}
+
+
+<$button class="mybuttons" >Close
+<$reveal stateTitle=<<currentTiddler>> stateField="nosplit" type="nomatch" text="nosplit" >
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]]" variable="frazon">
+<$action-createtiddler 
+	$basetitle=<<currentTiddler>> $savetitle="SaveTitle" 
+	text=<<frazon>> tags=<<maintag-helper>> fold="no" level={{!!level}}
+  
+/>
+<$action-listops $tiddler=<<maintag>> $subfilter="[{SaveTitle}]"/>
+
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]count[]]" variable="count">
+     <$action-listops $tiddler=<<maintag>> $filter=<<filt-append>> />
+</$list>
+
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]first[]]" variable="first">
+     <$action-setfield text=<<first>> />
+</$list>
+
+</$list>
+</$reveal>
+<$action-deletetiddler $tiddler=<<quali>>/>
+</$button> | 
+
+<$button>Delete 
+<$action-deletetiddler $tiddler=<<currentTiddler>>/>
+<$action-listops $tiddler=<<maintag>> $field="list" $subfilter=<<current-remover>> />
+<$action-deletetiddler $tiddler=<<quali>>/>
+</$button> |
+
+<$button>Reset 
+<$action-setfield text={{!!reset}}/>
+</$button> |
+
+
+<$checkbox field="nosplit" checked="nosplit" unchecked=""/> No split |
+<$link>Link</$link>
+<br/>
+<!-- ------------ Visual Break ---------------- -->
+<$wikify text=<<qualify-restore-helper>> name="rest-tid">
+<$vars 
+  vsn-cap-fld={{{[[1]][<rest-tid>get[text]] +[!is[blank]last[]addprefix[vsn-cap-]]}}}
+     vsn-fld={{{[[1]][<rest-tid>get[text]] +[!is[blank]last[]addprefix[vsn-]]}}}
+>
+<$button>Save to:
+<$action-setfield $field=<<vsn-fld>> $value={{!!text}}/>
+</$button> 
+or
+<$button>Rest. fm:
+<$action-setfield $field="text" $value={{{[all[current]get<vsn-fld>]}}}/>
+</$button> 
+<!-- FINDME -->	
+<$select tiddler=<<rest-tid>> default="1" >
+<$list filter="[range[1,5]]" variable="nw-item">
+  <option value=<<nw-item>>><<nw-item>></option>
+</$list>
+</$select>
+<$edit-text 
+  field=<<vsn-cap-fld>> 
+  size=40
+  tag="input"
+  placeholder="Write something"
+/>
+</$vars>
+</$wikify>
+</$reveal> 
+</$wikify>
+
+<!-- hr style="margin:3px;line-height:0px;background-color:gray;border-width:0" -->
+

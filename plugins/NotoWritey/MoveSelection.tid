@@ -1,0 +1,45 @@
+created: 20200607185721224
+list: 
+modified: 20200627213703692
+subtitle: Move Tiddler
+tag: covid19
+tags: kit
+tiddler: My First Tiddler Series II 3
+title: MoveSelection
+type: text/vnd.tiddlywiki
+
+\define neworder()
+<!-- Move <<movenum>> tiddlers: <<marker-list>> after <<anchor>> in {{!!tag}}<br/> -->
+<!-- $list filter="[list{!!tag}remove<marker-list>append<marker-list>$(b4)$:$(movenum)$<anchor>]" -->
+<$button>Move tiddler(s)
+<$action-listops $tiddler={{!!tag}} $filter="[list{!!tag}remove<marker-list>append<marker-list>$(b4)$:$(movenum)$<anchor>]" />
+</$button>
+\end
+
+Move tiddler that starts:<br/>
+<$macrocall $name="nw-first-50-chars" tid={{!!tiddler}} /> <br/>
+aka ''{{!!tiddler}}'' &nbsp; 
+
+<$radio tiddler="$:/temp/nw/movetype" field=text value="putbefore"> before </$radio> /
+<$radio tiddler="$:/temp/nw/movetype" field=text value="putafter"> after </$radio> :
+
+<$select tiddler="$:/temp/nw/anchor/" >
+	<$list filter="[tag{!!tag}]" variable="tid">
+  <$list filter="[<tid>get[text]splitregexp[\n\n]!is[blank]first[]split[]limit[50]join[]]" variable="first">
+     <option value=<<tid>>><<first>></option>
+  </$list>
+  </$list>
+</$select>
+
+''Total tiddlers to move: ''
+<$select tiddler="$:/temp/nw/movenum">
+<$list filter="[range[1,9]]" variable="mnum">
+    <option value=<<mnum>>><<mnum>></option>
+</$list>
+</$select>
+
+<$vars marker={{!!tiddler}} anchor={{$:/temp/nw/anchor/}} movenum={{$:/temp/nw/movenum}} b4={{$:/temp/nw/movetype}}  >
+<$set name=marker-list filter="[list{!!tag}allafter:include<marker>limit<movenum>]">
+<<neworder>>
+</$set>
+</$vars>

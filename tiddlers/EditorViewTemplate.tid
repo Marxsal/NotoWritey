@@ -1,0 +1,49 @@
+created: 20200524193349671
+modified: 20200627213703795
+tags: kit
+title: EditorViewTemplate
+type: text/vnd.tiddlywiki
+
+\define qualify-helper() <<qualify title:"""$:/temp/$(maintag)$""" >>
+\define filt-append() [list[$(maintag)$]] +[putafter:$(count)$<currentTiddler>]
+<$wikify name="quali" text=<<qualify-helper>> >
+<$reveal state=<<quali>> type="nomatch" text="edit">
+<$button 
+set=<<quali>> setTo="edit"
+class="tc-btn-invisible editbutton" 
+style="color:black;background-color:#e6f7ff;width:90%;text-align:left;"
+tag="div"
+>
+
+<$transclude mode="block"/>
+
+</$button>
+</$reveal>
+
+<$reveal state=<<quali>> type="match" text="edit">
+{{||$:/core/ui/EditTemplate/body/editor}}
+<$button class="mybuttons" >Close
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]]" variable="frazon">
+<$action-createtiddler $basetitle=<<currentTiddler>> $savetitle="SaveTitle" text=<<frazon>> tags=<<maintag>> />
+<$action-listops $tiddler=<<maintag>> $subfilter="[{SaveTitle}]"/>
+
+</$list>
+
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]count[]]" variable="count">
+     <$action-listops $tiddler=<<maintag>> $filter=<<filt-append>> />
+    
+</$list>
+
+<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]first[]]" variable="first">
+     <$action-setfield text=<<first>> />
+</$list>
+
+<$action-deletetiddler $tiddler=<<quali>>/>
+</$button>
+<$link>Link</$link>
+<br/><br/>
+
+</$reveal> 
+</$wikify>
+<hr style="margin:3px;line-height:0px;background-color:gray;border-width:0" />
+

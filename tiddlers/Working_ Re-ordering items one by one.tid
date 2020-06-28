@@ -1,0 +1,22 @@
+created: 20200608210501513
+list: A C D E B
+modified: 20200627213703091
+tags: kit
+title: Working: Re-ordering items one by one
+type: text/vnd.tiddlywiki
+
+\define neworder()
+<$button>Move it! 
+<$action-listops $filter="[list[]move:$(movement)$<marker>]" />
+</$button>
+\end
+<$vars marker="B" anchor="E">
+<$vars 
+  anchor-num={{{[list[]allbefore<anchor>count[]]}}}
+  marker-num={{{[list[]allbefore<marker>count[]]}}} >
+<$vars movement={{{[<anchor-num>subtract<marker-num>add[1]]}}} >
+<<movement>>
+<<neworder>>
+</$vars>
+</$vars>
+</$vars>

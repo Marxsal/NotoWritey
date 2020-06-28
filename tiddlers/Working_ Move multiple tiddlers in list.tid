@@ -1,0 +1,21 @@
+created: 20200608210501513
+list: A D E B C
+modified: 20200627213703135
+reset: A B C D E
+tags: kit
+title: Working: Move multiple tiddlers in list
+type: text/vnd.tiddlywiki
+
+\define neworder()
+Move <<movenum>> tiddlers: <<marker-list>> after <<anchor>> <br/>
+<$list filter="[list[]remove<marker-list>append<marker-list>putafter:$(movenum)$<anchor>]" />
+<$button>Move it! <<marker-list>>
+<$action-listops $filter="[list[]remove<marker-list>append<marker-list>putafter:$(movenum)$<anchor>]" />
+</$button>
+\end
+
+<$vars marker="B" anchor="E" movenum="2" >
+<$set name=marker-list filter="[list[]allafter:include<marker>limit<movenum>]">
+<<neworder>>
+</$set>
+</$vars>

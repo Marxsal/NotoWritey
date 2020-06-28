@@ -1,0 +1,11 @@
+created: 20200627220342571
+dependents: 
+description: Fullscreen editing for CodeMirror
+list: readme
+modified: 20200627220342571
+name: CodeMirror Fullscreen
+parent-plugin: $:/plugins/tiddlywiki/codemirror
+plugin-type: plugin
+title: $:/plugins/tiddlywiki/codemirror-fullscreen
+type: application/json
+version: 5.1.22

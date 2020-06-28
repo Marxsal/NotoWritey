@@ -1,0 +1,9 @@
+created: 20200604160920624
+fold: no
+level: 2
+modified: 20200627215811625
+tags: roadmap
+title: The plan / Roadmap-1 6
+type: text/vnd.tiddlywiki
+
+Update code to allow linking to work. Change from $button to $link. Upgrade CSS.

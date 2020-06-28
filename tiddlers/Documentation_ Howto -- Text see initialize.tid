@@ -1,0 +1,9 @@
+created: 20200525191755890
+fold: no
+level: 2
+modified: 20200627215746978
+tags: Howto
+title: Documentation: Howto -- Text see initialize
+type: text/vnd.tiddlywiki
+
+Fill in the blank for the name of the starter tiddler. Note that any existing tiddler with the same name will get written over. Then click "initialize". Your tiddler will now contain a single line, like this:

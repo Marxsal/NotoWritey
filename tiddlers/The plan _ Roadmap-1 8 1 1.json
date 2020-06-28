@@ -1,0 +1,13 @@
+[
+    {
+        "created": "20200604162138320",
+        "text": "* Restore from tag tiddler\n* Configure no-split as default at document level\n* Button: Remove tiddler from noto document\n* Button: Combine next X tiddlers\n* Make export to wikitext respect tiddler type\n* Tools to allow movement of tiddlers inside document tree\n** simple up/down movement\n** Movement by mark\n** Movement of group of tiddlers\n* Improve performance with DynaView ?\n* Sidebar configuration panel?\n* ~~Cloning/versioning working tiddler~~ (6/5)\n* ~~Bookmark or \"star\" current tiddler. Document level configuration for defining bookmark tag~~ (6/4)\n* ~~Reset working tiddler~~ (6/5)\n* ~~New tiddlers take type of originating tiddler~~ (6/4)\n* ~~Backup tag tiddler~~ (6/5)\n* ~~Wrap settings in style (nw-settings)~~ (6/6)\n* ~~Show tag pill in settings for 3rd party operations~~ (6/6)",
+        "title": "The plan / Roadmap-1 8 1 1",
+        "tags": "roadmap",
+        "modified": "20200627215811748",
+        "type": "text/vnd.tiddlywiki",
+        "reset": "* ~~New tiddlers take type of originating tiddler~~ (6/4)\n* Backup tag tiddler\n* Restore from tag tiddler\n* ~~Cloning/versioning working tiddler~~ (6/5)\n* ~~Bookmark or \"star\" current tiddler. Document level configuration for defining bookmark tag~~ (6/4)\n* ~~Reset working tiddler~~ (6/5)\n* Configure no-split as default at document level\n* Button: Remove tiddler from noto document\n* Button: Combine next X tiddlers\n* Make export to wikitext respect tiddler type\n* Tools to allow movement of tiddlers inside document tree\n** simple up/down movement\n** Movement by mark\n** Movement of group of tiddlers\n* Improve performance with DynaView ?\n* Sidebar configuration panel?",
+        "level": "1",
+        "fold": "no"
+    }
+]

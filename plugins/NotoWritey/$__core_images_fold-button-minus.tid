@@ -1,0 +1,9 @@
+created: 20200603222507324
+modified: 20200627213703995
+tags: $:/tags/Image kit
+title: $:/core/images/fold-button-minus
+type: text/vnd.tiddlywiki
+
+<svg width="22pt" height="22pt" class="tc-image-minus-button tc-image-button" viewBox="0 0 128 128">
+<path fill="currentColor" d="M4 56h120v16h-120z"/>
+</svg>

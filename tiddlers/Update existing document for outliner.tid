@@ -1,0 +1,20 @@
+created: 20200603003413746
+modified: 20200627213703209
+tags: kit
+title: Update existing document for outliner
+type: text/vnd.tiddlywiki
+
+Document tiddlers now need a "fold" field (yes/no to show fold status) and a "level" field (shows indent level inside of document). This tool will help you upgrade your existing document.
+
+''Document tag:'' <$edit-text 
+  tiddler="$:/temp/tagname" 
+  size=30
+  tag="input"
+  default="Insert your tag here."
+/><br/>
+
+<$button>Set {{{[tag{$:/temp/tagname}count[]]}}} tiddlers.
+<$list filter="[tag{$:/temp/tagname}]">
+<$action-setfield fold="no" level="1"/>
+</$list>
+</$button>
