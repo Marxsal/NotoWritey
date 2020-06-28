@@ -1,10 +1,9 @@
 created: 20200525193937414
 fold: no
 level: 2
-modified: 20200627215934589
-reset: [img width=200px [Initial line.png]]
+modified: 20200628194024888
 tags: Howto
 title: Documentation: Howto - Image Initial Line
 type: text/vnd.tiddlywiki
 
-[img width=200px [Initial line.png]][[Initial line.png]]
+[img width=200px [Initial line.png]]

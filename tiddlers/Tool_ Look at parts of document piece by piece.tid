@@ -1,0 +1,10 @@
+created: 20200628192227432
+modified: 20200628194607975
+tags: kit
+title: Tool: Look at parts of document piece by piece
+type: text/vnd.tiddlywiki
+
+<$list filter="[tag[Howto]]" >
+{{!!level}} | <$link/> |<br/>
+{{!!text}}<br/>
+</$list>
