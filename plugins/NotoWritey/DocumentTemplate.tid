@@ -1,5 +1,5 @@
 created: 20200528190017746
-modified: 20200627213703856
+modified: 20200629022702280
 tags: kit
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
@@ -45,6 +45,8 @@ type: text/vnd.tiddlywiki
 />
 <$action-listops $tiddler=<<maintag>> $subfilter="[{SaveTitle}]"/>
 
+</$list>
+
 <$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]count[]]" variable="count">
      <$action-listops $tiddler=<<maintag>> $filter=<<filt-append>> />
 </$list>
@@ -53,7 +55,6 @@ type: text/vnd.tiddlywiki
      <$action-setfield text=<<first>> />
 </$list>
 
-</$list>
 </$reveal>
 <$action-deletetiddler $tiddler=<<quali>>/>
 </$button> | 

@@ -1,0 +1,21 @@
+created: 20200629022811905
+fold: no
+level: 2
+modified: 20200629023151215
+nosplit: nosplit
+reset: installation steps
+tags: Howto
+title: Documentation: How to use NotoWritey 2 1
+type: text/vnd.tiddlywiki
+
+For stand-alone ~TiddlyWiki, drag and drop the following plugin into your ~TiddlyWiki file:
+
+<<<
+$:/plugins/MAS/NotoWritey
+<<<
+
+For node.js, you can find the plugin files at:
+
+<<<
+https://github.com/Marxsal/NotoWritey/tree/master/plugins/NotoWritey
+<<<
