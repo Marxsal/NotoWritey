@@ -1,0 +1,156 @@
+created: 20200701184525648
+modified: 20200701184541560
+tags: kit
+title: Folding Macros - Reference Backup
+type: text/vnd.tiddlywiki
+
+\define nw-first-50-chars(tid) <$set filter="[<__tid__>get[text]splitregexp[\n\n]!is[blank]first[]split[]limit[50]join[]]" name="char50"><<char50>></$set>
+\define indent(amt)
+<$action-setfield level=<<dent>> /><<hypo>>
+\end
+\define unused-code()
+<$set filter="[{!!level}add[$amt$]]" name=hypo select=0>
+<$list filter="[<hypo>compare:number:lteq[5]compare:number:gteq[1]]">
+</$list></$set>
+\end
+\define show-tiddler(tid)
+<$tiddler tiddler="""$tid$""">
+<div class={{{[[1]][all[current]get[level]]+[!is[blank]last[]addprefix[nw-level-]]}}} style="overflow:auto;">
+<div class="nw-select">
+<$button popup="$:/state/$tid$/popup" class="tc-btn-invisible"><$transclude tiddler="$:/core/images/menu-button-hamburg" mode="inline"/></$button>
+<$reveal type="popup" state="$:/state/$tid$/popup">
+<div class="tc-drop-down" style="min-width: 7em;">
+Level: <$text text={{{[[1]][all[current]get[level]]+[!is[blank]last[]]}}}/>   <br/>
+<div>
+<!-- ----------------- INDENT LEFT ---------------------- -->
+<$set filter="[{!!level}add[-1]max[1]]" name=dent select=0>
+<$button actions=<<indent>> class="tc-btn-invisible" style="display: inline-block;width: unset;padding:0;" tooltip="Indent left">{{$:/core/images/chevron-left}}</$button>
+</$set>
+<!-- ----------------- MOVE UP ---------------------- -->
+<$button class="tc-btn-invisible nw-menu-button"  tooltip="Move Up">{{$:/core/images/chevron-up}}
+<$action-listops $tiddler=<<maintag>> $filter="[list<maintag>move:-1<__tid__>]" />
+</$button>
+<!-- ----------------- MOVE DOWN ---------------------- -->
+<$button class="tc-btn-invisible nw-menu-button"  tooltip="Move Down">{{$:/core/images/chevron-down}}
+<$action-listops $tiddler=<<maintag>> $filter="[list<maintag>move:1<__tid__>]" />
+</$button>
+<!-- ----------------- INDENT RIGHT ---------------------- -->
+<$set filter="[{!!level}add[1]min[5]]" name=dent select=0>
+<$button actions=<<indent>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" tooltip="Indent right">{{$:/core/images/chevron-right}}</$button>
+</$set>
+</div>
+<!-- -------------------- BOOKMARKS -------------- -->
+<$wikify text=<<nw-bookmark-tag>> name="bookmark">
+<$fieldmangler>
+<$list filter="[all[current]!tag<bookmark>]" variable="dum">
+<$vars starcolor="gray">
+<$button message="tm-add-tag" param=<<bookmark>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" 
+tooltip="Set bookmark" 
+>{{||$:/images/nw/star-solid}} (<<bookmark>>)
+</$button>
+</$vars>
+</$list>
+<$list filter="[all[current]tag<bookmark>]" variable="dum">
+<$vars starcolor="yellow">
+<$button message="tm-remove-tag" param=<<bookmark>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" 
+tooltip="Remove bookmark" 
+>{{||$:/images/nw/star-solid}} (<<bookmark>>)</$button>
+</$vars>
+</$list>
+</$fieldmangler>
+</$wikify>
+
+<!-- ----------------- MOVE TO ---------------------- -->
+<br/>
+<$button class="tc-btn-invisible nw-menu-button" tooltip="Move one or more tiddlers somewhere in the document." >Move &gt;
+<$action-setfield $tiddler="MoveSelection"
+  tiddler="""$tid$"""
+	tag=<<maintag>> />
+<$action-sendmessage $message="tm-modal" $param="MoveSelection"/>
+</$button>
+
+</div>
+</$reveal>
+
+<$reveal type="nomatch" stateTitle=<<currentTiddler>> stateField="fold" text="yes">
+<$button class="tc-btn-invisible" setTitle=<<currentTiddler>> setField="fold" setTo="yes"><$transclude tiddler="$:/core/images/fold-button-minus" mode="inline"/></$button>
+</$reveal>
+
+<$reveal type="match" stateTitle=<<currentTiddler>> stateField="fold" text="yes">
+<$button class="tc-btn-invisible" setTitle=<<currentTiddler>> setField="fold" setTo="no"><$transclude tiddler="$:/core/images/unfold-button-plus" mode="inline"/></$button>
+</$reveal>
+
+</div><$link tag="div"
+class="nw-document tc-document-tiddler-link tc-document-tiddler tc-tiddlylink tc-tiddlylink-resolves"
+><$transclude mode=block />
+</$link>
+</div>
+</$tiddler>
+\end
+
+
+\define not-at-top(tag,curtid,origtid)
+<$set filter="[list<__tag__>before<__curtid__>]" name="prev"  select=0>
+<$set filter="[<__curtid__>get[level]]"         name="level" select=0>
+<$set filter="[<prev>get[level]]"              name="plevel" select=0>
+
+<!-- LOGIC FOR WHEN NOT AT TOP OF OUTLINE -->
+<!--
+NOT AT TOP OF OUTLINE<br/>
+Prev: <<prev>> <br/>
+Level: <<level>><br/>
+Prev Level: <<plevel>><br/>
+-->
+<$reveal default=<<level>> text=<<plevel>>  type="lteq" class="nw-reveal-1">
+<!-- CALLING foldstatus #1: --> 
+<$macrocall $name=foldstatus tag="""$tag$""" curtid=<<prev>> origtid="""$origtid$""" />
+</$reveal>
+<$reveal default=<<level>> text=<<plevel>>  type="gt" class="nw-reveal-2">
+<$list filter="[<prev>get[fold]!match[yes]]"   select=0 >
+<$macrocall $name=foldstatus tag="""$tag$""" curtid=<<prev>> origtid="""$origtid$""" />
+</$list>
+</$reveal>
+</$set></$set></$set>
+\end
+
+\define foldstatus(tag, curtid, origtid)
+<$set filter="[list<__tag__>before<__curtid__>]" name="prev"  select=0>
+<$set filter="[<__curtid__>get[level]]"         name="level" select=0>
+<$list filter="[<level>match[1]]~[<prev>match[]]" emptyMessage=<<not-at-top """$tag$""" """$curtid$""" """$origtid$""">>  >
+<!-- AT TOP OF OUTLINE -->
+<!-- SPECIAL CASE -- CALLED FROM LEVEL #1 -->
+<$reveal text="""$curtid$""" default="""$origtid$""" type="match" class="REVEAL3">
+<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="match" class="REVEAL4">
+   <<show-tiddler """$origtid$""">>
+</$reveal>
+<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL5">
+   <!-- SHOWING ORIGINAL TEXT: -->
+   <<show-tiddler """$origtid$""">>
+	 <!-- $transclude tiddler="""$origtid$""" mode="block" -->
+</$reveal>
+</$reveal>
+<!-- CALLED FROM SOME LEVEL OTHER THAN 1 -->
+<$reveal text="""$curtid$""" default="""$origtid$""" type="nomatch" class="REVEAL6">
+<$reveal stateTitle="""$curtid$""" stateField="fold" text="yes" type="match7">
+   SHOW NOTHING
+</$reveal>
+<$reveal stateTitle="""$curtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL8">
+<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="match" class="REVEAL9">
+  <<show-tiddler """$origtid$""">>
+</$reveal>
+<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL10" >
+<!-- SHOW ORIGINAL TIDDLER -->
+  <<show-tiddler """$origtid$""">>
+</$reveal>
+</$reveal>
+
+</$reveal>
+
+</$list>
+
+
+</$set></$set>
+
+\end
+
+<<foldstatus "covid19" "My First Tiddler Series II 2" "My First Tiddler Series II 2" >>

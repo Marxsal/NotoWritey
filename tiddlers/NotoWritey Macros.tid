@@ -1,0 +1,129 @@
+created: 20200525034606174
+modified: 20200701185727861
+tags: $:/tags/Macro kit
+title: NotoWritey Macros
+type: text/vnd.tiddlywiki
+
+\define default-name() $(currentTiddler)$-YOUR-ID-HERE
+\define nw-bookmark-tiddler() :/config/nw/$(tagname)$
+\define nw-bookmark-tag() {{:/config/nw/$(tagname)$}}
+\define notag(tag) 
+<$vars lb="[[" rb="]]">
+
+There is no tag tiddler <code><<tagname>></code> (or it's missing list field). <br/>
+''Initial tiddler name:'' <$edit-text 
+  tiddler="$:/temp/initial" 
+  size=40 
+  tag="input"
+  default=<<default-name>>
+/><br/>
+<$reveal state="$:/temp/initial" text="" type="match">
+You must modify the above initial tiddler name.
+</$reveal>
+<$reveal state="$:/temp/initial" text=<<tagname>> type="match">
+The initial tiddler can not be the same as the master tag tiddler!
+</$reveal>
+
+<$reveal state="$:/temp/initial" text="" type="nomatch">
+<$reveal state="$:/temp/initial" text=<<tagname>> type="nomatch">
+This button will set up initial tiddler and initialize tiddler <code><<tagname>></code> <br/>
+<$button>Initialize 
+<$action-setfield $tiddler={{$:/temp/initial}} tags={{{[<tagname>addprefix<lb>addsuffix<rb>]}}}
+  fold="no" level="1" text="This is an initial line."
+/>
+<$action-setfield $tiddler=<<tagname>> list={{{[{$:/temp/initial}addprefix<lb>addsuffix<rb>]}}} />
+<$action-deletetiddler $tiddler="""$:/temp/initial"""/>
+</$button>
+</$reveal>
+</$reveal>
+</$vars>
+\end
+
+\define nw-display-toolbar()
+<$reveal state="$:/config/notowritey/editor-toolbar/visibility" type="match" text="hide">
+ display: none;
+</$reveal>
+\end
+
+
+\define noto2(tag)
+<$list filter="[title<__tag__>has[list]]" emptyMessage=<<notag """$tag$""">>>
+<$vars maintag="""$tag$""">
+<$list filter="[tag<maintag>]" template="EditorViewTemplate"/>
+</$vars>
+</$list>
+\end
+
+\define compile-w()
+<$list filter="[tag<tagname>]">
+<$view field="text"/>
+</$list>
+\end
+
+\define compile-h()
+<$list filter="[tag<tagname>]">
+<$transclude mode=block/>
+</$list>
+\end
+
+
+\define noto(tag)
+<$set filter="""[<currentTiddler>] [<__tag__>] +[!is[blank]last[]]""" name="tagname" select=0 >
+<$list filter="[title<tagname>has[list]]" emptyMessage=<<notag>>>
+<$vars maintag=<<tagname>> rlevel="1" rfold="no"  >
+<$list filter="[tag<maintag>first[]]" template="FoldControlTemplate"/>
+</$vars>
+</$list>
+
+<div class="nw-settings" >
+
+<hr style="border-width:2px;margin-bottom:0px;" /><h3 style="background-color: lightcyan;text-align:center;margin:0px;line-height:1.5em" > ~NotoWritey Settings </h3><hr style="border-width:2px;margin-top:0px;" />
+
+''Tag Pill:'' <$tiddler tiddler=<<tagname>> >
+<$transclude tiddler="$:/core/ui/TagTemplate" />
+</$tiddler>
+|
+''Show Editor Toolbar'': <$checkbox tiddler="$:/config/notowritey/editor-toolbar/visibility" field="text" checked="show" unchecked="hide" default="show"/> 
+<br/> 
+''Tag for bookmarks:'' <$edit-text 
+  tiddler=<<nw-bookmark-tiddler>> 
+  size=20 
+  tag="input"
+  default="Edit this tag name or it won't work. Sorry."
+/>
+
+''Export to tiddler:'' <$edit-text 
+  tiddler="$:/temp/nw-export-tid" 
+  size=40 
+  tag="input"
+  default="Edit this field"
+/>
+
+<$wikify text="""<<compile-w>>""" name="compiled">
+<$button message="tm-copy-to-clipboard" param=<<compiled>> >
+Copy wikitext to clipboard
+</$button>
+<$button>
+Copy wikitext to tiddler {{$:/temp/nw-export-tid}}
+<$action-setfield $tiddler={{$:/temp/nw-export-tid}} $field="text" $value=<<compiled>> />
+</$button>
+<p></p>
+</$wikify>
+
+<$wikify text="""<<compile-h>>""" name="compiled" output="html">
+<$button message="tm-copy-to-clipboard" param=<<compiled>> >
+Copy HTML to clipboard
+</$button>
+<$button >
+Copy HTML to tiddler {{$:/temp/nw-export-tid}}
+<$action-setfield $tiddler={{$:/temp/nw-export-tid}} $field="text" $value=<<compiled>> />
+</$button>
+</$wikify>
+
+<$button>Backup Tiddler Order
+<$action-listops $tiddler=<<tagname>> $field="nw-list-backup" $filter="[list<tagname>]" />
+</$button>
+
+</div>
+</$set>
+\end

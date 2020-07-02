@@ -1,0 +1,31 @@
+created: 20200701210656495
+modified: 20200701234428806
+tags: 
+title: Delete later
+type: text/vnd.tiddlywiki
+
+<$reveal text=<<rlevel>> type="lt" default=<<clevel>>   >
+	HERE 1
+	    <$reveal text=<<rfold>> type="match" default="yes">
+			<$tiddler tiddler=<<ntid>> >
+			   
+			   <$transclude tiddler="FoldControlTemplate" mode=block />
+			</$tiddler>
+			</$reveal>
+			
+			<$reveal text=<<rfold>> type="match" default="no">
+			   <$reveal text=<<cfold>> type="match" default="yes">
+			      Fold macros (?) should display a PLUS icon here.
+			   </$reveal>
+
+			   <br/>vvv THE FOLLOWING SHOULD BE REPLACED BY FOLD MACRO ??? <br/>
+			   <$transclude />
+				 <br/>^^^ THE PREVIOUS SHOULD BE REPLACED BY FOLD MACRO ??? <br/>
+			
+			   <$vars rfold=<<cfold>> rlevel="clevel"  >
+			     <$tiddler tiddler=<<ntid>> >
+				     <$transclude tiddler="FoldControlTemplate" mode=block />
+			     </$tiddler>
+				 </$vars>
+			</$reveal>
+	</$reveal>
