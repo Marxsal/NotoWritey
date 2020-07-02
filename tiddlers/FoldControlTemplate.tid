@@ -1,5 +1,5 @@
 created: 20200701185617174
-modified: 20200701234046333
+modified: 20200702025101824
 tags: kit
 title: FoldControlTemplate
 type: text/vnd.tiddlywiki
@@ -10,25 +10,20 @@ type: text/vnd.tiddlywiki
 	cfold = {{!!fold}}
   ntid  = {{{[list<tagname>after<currentTiddler>]}}}
 >
+<!--
 CALLED WITH 
    <$link to=<<ctid>> ><<ctid>></$link>, rlevel=<<rlevel>>, 
    rfold=<<rfold>>, clevel=<<clevel>>, cfold=<<cfold>>, NEXT: <$link to=<<ntid>> ><<ntid>></$link> <br/>
+-->
 <$reveal default=<<rlevel>> type="lt" text=<<clevel>>   >
-	HERE 1 <br/>
 	    <$reveal text=<<rfold>> type="match" default="yes">
 			<$tiddler tiddler=<<ntid>> >
-			   NO DISPLAY of <<ntid>> <br/>
+			  <!-- NO DISPLAY of <<ntid>> <br/> -->
 			   <$transclude tiddler="FoldControlTemplate" mode=block />
 			</$tiddler>
 			</$reveal>
-			
 			<$reveal text=<<rfold>> type="match" default="no">
-			   <$reveal text=<<cfold>> type="match" default="yes">
-			      Fold macros (?) should display a PLUS icon here.
-			   </$reveal>
-
-				 <$transclude />
-				 
+					 <$transclude tiddler="DocumentTemplate" />
 			   <$vars rfold=<<cfold>> rlevel=<<clevel>>  >
 			     <$tiddler tiddler=<<ntid>> >
 				     <$transclude tiddler="FoldControlTemplate" mode=block />
@@ -36,14 +31,10 @@ CALLED WITH
 				 </$vars>
 			</$reveal>
 	</$reveal>
-	HERE 2  <<rlevel>> == <<clevel>> ?? <br/>
-	
+<!--	HERE 2  <<rlevel>> == <<clevel>> ?? <br/> -->
 	<$reveal default=<<rlevel>> type="gteq" text=<<clevel>>   >
-	HERE 3 (<<currentTiddler>>) <br/>
-	    <$reveal text=<<cfold>> type="match" default="yes">
-			 +++ 
-			</$reveal>
-			<$transclude />
+	<!-- HERE 3 (<<currentTiddler>>) <br/> -->
+	    <$transclude tiddler="DocumentTemplate"/>
 			<$vars rlevel=<<clevel>> rfold=<<cfold>> >
 			<$tiddler tiddler=<<ntid>> >
 			  <$transclude tiddler="FoldControlTemplate" mode=block />
