@@ -1,5 +1,5 @@
 created: 20200701185617174
-modified: 20200702025101824
+modified: 20200702235432557
 tags: kit
 title: FoldControlTemplate
 type: text/vnd.tiddlywiki
@@ -15,31 +15,38 @@ CALLED WITH
    <$link to=<<ctid>> ><<ctid>></$link>, rlevel=<<rlevel>>, 
    rfold=<<rfold>>, clevel=<<clevel>>, cfold=<<cfold>>, NEXT: <$link to=<<ntid>> ><<ntid>></$link> <br/>
 -->
-<$reveal default=<<rlevel>> type="lt" text=<<clevel>>   >
-	    <$reveal text=<<rfold>> type="match" default="yes">
-			<$tiddler tiddler=<<ntid>> >
+<!-- $reveal default=<<rlevel>> type="lt" text=<<clevel>>   -->
+<$list filter="[<rlevel>compare:number:lt<clevel>]" variable="dummy">
+	    <!-- $reveal text=<<rfold>> type="match" default="yes" -->
+			<$list filter="[<rfold>compare:string:eq[yes]]" variable="dummy">
+			  <$tiddler tiddler=<<ntid>> >
 			  <!-- NO DISPLAY of <<ntid>> <br/> -->
-			   <$transclude tiddler="FoldControlTemplate" mode=block />
-			</$tiddler>
-			</$reveal>
-			<$reveal text=<<rfold>> type="match" default="no">
+				<$list filter="[<ntid>!regexp[^$]]" variable="dummy">
+			   <$transclude tiddler="FoldControlTemplate" mode=inline />
+				 </$list>
+			  </$tiddler>
+			</$list>
+			<!-- $reveal text=<<rfold>> type="match" default="no" -->
+			<$list filter="[<rfold>compare:string:eq[no]]" variable="dummy">
 					 <$transclude tiddler="DocumentTemplate" />
 			   <$vars rfold=<<cfold>> rlevel=<<clevel>>  >
 			     <$tiddler tiddler=<<ntid>> >
-				     <$transclude tiddler="FoldControlTemplate" mode=block />
+					 <$list filter="[<ntid>!regexp[^$]]" variable="dummy">
+				     <$transclude tiddler="FoldControlTemplate" mode=inline />
+					 </$list>
 			     </$tiddler>
 				 </$vars>
-			</$reveal>
-	</$reveal>
-<!--	HERE 2  <<rlevel>> == <<clevel>> ?? <br/> -->
-	<$reveal default=<<rlevel>> type="gteq" text=<<clevel>>   >
-	<!-- HERE 3 (<<currentTiddler>>) <br/> -->
-	    <$transclude tiddler="DocumentTemplate"/>
+			</$list>
+</$list>
+  <!-- $reveal default=<<rlevel>> type="gteq" text=<<clevel>>   -->
+	<$list filter="[<rlevel>compare:number:gteq<clevel>]" variable="dummy">
+	<$transclude tiddler="DocumentTemplate" mode="inline"/>
 			<$vars rlevel=<<clevel>> rfold=<<cfold>> >
 			<$tiddler tiddler=<<ntid>> >
-			  <$transclude tiddler="FoldControlTemplate" mode=block />
+			<$list filter="[<ntid>!regexp[^$]]" variable="dummy">
+			  <$transclude tiddler="FoldControlTemplate" mode=inline />
+			</$list>
 			</$tiddler>
 			</$vars>
-	</$reveal>
+	</$list>
 </$vars>
-

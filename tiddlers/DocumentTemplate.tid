@@ -1,11 +1,12 @@
 created: 20200528190017746
-modified: 20200702030058599
+modified: 20200702230334494
 tags: kit
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
 
 \define qualify-helper() <<qualify title:"""$:/temp/$(maintag)$""" >>
 \define qualify-restore-helper() <<qualify title:"""$:/temp/$(maintag)$/restore""" >>
+\define temp-tiddler() $:/temp/$(currentTiddler)$
 \define maintag-helper() [[$(maintag)$]] 
 \define current-remover() -[[$(currentTiddler)$]]
 \define filt-append() [list[$(maintag)$]] +[putafter:$(count)$<currentTiddler>]
@@ -17,27 +18,26 @@ type: text/vnd.tiddlywiki
 <$reveal type="match" default=<<currentTiddler>> text=<<nav>> >
   <$action-setfield reset={{!!text}} />
   <$action-setfield $tiddler=<<quali>> $value="edit" />
+  <$action-setfield $tiddler=<<temp-tiddler>> $value={{!!text}} />	
 </$reveal>
 </$vars>
 \end
-
 <$wikify name="quali" text=<<qualify-helper>> >
 <$reveal state=<<quali>> type="nomatch" text="edit" class="nw-reveal-a" tag="div">
 <$linkcatcher actions=<<dothese>>>
 <$tiddler tiddler=<<currentTiddler>>>
-<$macrocall $name="show-tiddler"  tid=<<currentTiddler>>  />
-<!-- $transclude mode="block" -->
+<$macrocall $name="show-tiddler"  tid=<<currentTiddler>>  /><!-- $transclude mode="block" -->
 </$tiddler>
 </$linkcatcher>
 </$reveal>
-
 <$reveal state=<<quali>> type="match" text="edit" class="nw-editor">
+<$tiddler tiddler=<<temp-tiddler>> ><!-- FINDME -->
 {{||$:/core/ui/EditTemplate/body/editor}}
-
+</$tiddler>
 
 <$button class="mybuttons" >Close
 <$reveal stateTitle=<<currentTiddler>> stateField="nosplit" type="nomatch" text="nosplit" >
-<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]]" variable="frazon">
+<$list filter="[<temp-tiddler>get[text]splitregexp[\n\n]!is[blank]butfirst[]]" variable="frazon">
 <$action-createtiddler 
 	$basetitle=<<currentTiddler>> $savetitle="SaveTitle" 
 	text=<<frazon>> tags=<<maintag-helper>> fold="no" level={{!!level}}
@@ -47,22 +47,24 @@ type: text/vnd.tiddlywiki
 
 </$list>
 
-<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]butfirst[]count[]]" variable="count">
+<$list filter="[<temp-tiddler>get[text]splitregexp[\n\n]!is[blank]butfirst[]count[]]" variable="count">
      <$action-listops $tiddler=<<maintag>> $filter=<<filt-append>> />
 </$list>
 
-<$list filter="[all[current]get[text]splitregexp[\n\n]!is[blank]first[]]" variable="first">
+<$list filter="[<temp-tiddler>get[text]splitregexp[\n\n]!is[blank]first[]]" variable="first">
      <$action-setfield text=<<first>> />
 </$list>
 
 </$reveal>
 <$action-deletetiddler $tiddler=<<quali>>/>
+<$action-deletetiddler $tiddler=<<temp-tiddler>>/>
 </$button> | 
 
 <$button>Delete 
 <$action-deletetiddler $tiddler=<<currentTiddler>>/>
 <$action-listops $tiddler=<<maintag>> $field="list" $subfilter=<<current-remover>> />
 <$action-deletetiddler $tiddler=<<quali>>/>
+<$action-deletetiddler $tiddler=<<temp-tiddler>>/>
 </$button> |
 
 <$button>Reset 
@@ -102,6 +104,3 @@ or
 </$wikify>
 </$reveal> 
 </$wikify>
-
-<!-- hr style="margin:3px;line-height:0px;background-color:gray;border-width:0" -->
-
