@@ -1,5 +1,5 @@
 created: 20200525034606174
-modified: 20200627213703639
+modified: 20200701185727861
 tags: $:/tags/Macro kit
 title: NotoWritey Macros
 type: text/vnd.tiddlywiki
@@ -70,8 +70,8 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 \define noto(tag)
 <$set filter="""[<currentTiddler>] [<__tag__>] +[!is[blank]last[]]""" name="tagname" select=0 >
 <$list filter="[title<tagname>has[list]]" emptyMessage=<<notag>>>
-<$vars maintag=<<tagname>> >
-<$list filter="[tag<maintag>]" template="DocumentTemplate"/>
+<$vars maintag=<<tagname>> rlevel="1" rfold="no"  >
+<$list filter="[tag<maintag>first[]]" template="FoldControlTemplate"/>
 </$vars>
 </$list>
 

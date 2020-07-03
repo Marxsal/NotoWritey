@@ -1,5 +1,5 @@
 created: 20200531193641167
-modified: 20200627213703777
+modified: 20200702152611783
 tags: kit $:/tags/Macro
 title: Folding Macros
 type: text/vnd.tiddlywiki
@@ -8,11 +8,7 @@ type: text/vnd.tiddlywiki
 \define indent(amt)
 <$action-setfield level=<<dent>> /><<hypo>>
 \end
-\define unused-code()
-<$set filter="[{!!level}add[$amt$]]" name=hypo select=0>
-<$list filter="[<hypo>compare:number:lteq[5]compare:number:gteq[1]]">
-</$list></$set>
-\end
+
 \define show-tiddler(tid)
 <$tiddler tiddler="""$tid$""">
 <div class={{{[[1]][all[current]get[level]]+[!is[blank]last[]addprefix[nw-level-]]}}} style="overflow:auto;">
@@ -89,68 +85,6 @@ class="nw-document tc-document-tiddler-link tc-document-tiddler tc-tiddlylink tc
 \end
 
 
-\define not-at-top(tag,curtid,origtid)
-<$set filter="[list<__tag__>before<__curtid__>]" name="prev"  select=0>
-<$set filter="[<__curtid__>get[level]]"         name="level" select=0>
-<$set filter="[<prev>get[level]]"              name="plevel" select=0>
 
-<!-- LOGIC FOR WHEN NOT AT TOP OF OUTLINE -->
-<!--
-NOT AT TOP OF OUTLINE<br/>
-Prev: <<prev>> <br/>
-Level: <<level>><br/>
-Prev Level: <<plevel>><br/>
--->
-<$reveal default=<<level>> text=<<plevel>>  type="lteq" class="nw-reveal-1">
-<!-- CALLING foldstatus #1: --> 
-<$macrocall $name=foldstatus tag="""$tag$""" curtid=<<prev>> origtid="""$origtid$""" />
-</$reveal>
-<$reveal default=<<level>> text=<<plevel>>  type="gt" class="nw-reveal-2">
-<$list filter="[<prev>get[fold]!match[yes]]"   select=0 >
-<$macrocall $name=foldstatus tag="""$tag$""" curtid=<<prev>> origtid="""$origtid$""" />
-</$list>
-</$reveal>
-</$set></$set></$set>
-\end
-
-\define foldstatus(tag, curtid, origtid)
-<$set filter="[list<__tag__>before<__curtid__>]" name="prev"  select=0>
-<$set filter="[<__curtid__>get[level]]"         name="level" select=0>
-<$list filter="[<level>match[1]]~[<prev>match[]]" emptyMessage=<<not-at-top """$tag$""" """$curtid$""" """$origtid$""">>  >
-<!-- AT TOP OF OUTLINE -->
-<!-- SPECIAL CASE -- CALLED FROM LEVEL #1 -->
-<$reveal text="""$curtid$""" default="""$origtid$""" type="match" class="REVEAL3">
-<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="match" class="REVEAL4">
-   <<show-tiddler """$origtid$""">>
-</$reveal>
-<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL5">
-   <!-- SHOWING ORIGINAL TEXT: -->
-   <<show-tiddler """$origtid$""">>
-	 <!-- $transclude tiddler="""$origtid$""" mode="block" -->
-</$reveal>
-</$reveal>
-<!-- CALLED FROM SOME LEVEL OTHER THAN 1 -->
-<$reveal text="""$curtid$""" default="""$origtid$""" type="nomatch" class="REVEAL6">
-<$reveal stateTitle="""$curtid$""" stateField="fold" text="yes" type="match7">
-   SHOW NOTHING
-</$reveal>
-<$reveal stateTitle="""$curtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL8">
-<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="match" class="REVEAL9">
-  <<show-tiddler """$origtid$""">>
-</$reveal>
-<$reveal stateTitle="""$origtid$""" stateField="fold" text="yes" type="nomatch" class="REVEAL10" >
-<!-- SHOW ORIGINAL TIDDLER -->
-  <<show-tiddler """$origtid$""">>
-</$reveal>
-</$reveal>
-
-</$reveal>
-
-</$list>
-
-
-</$set></$set>
-
-\end
 
 <<foldstatus "covid19" "My First Tiddler Series II 2" "My First Tiddler Series II 2" >>

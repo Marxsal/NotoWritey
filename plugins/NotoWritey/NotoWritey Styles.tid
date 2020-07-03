@@ -1,12 +1,25 @@
 created: 20200525034100646
-modified: 20200627213703613
+modified: 20200702235935122
 tags: $:/tags/Stylesheet kit
 title: NotoWritey Styles
 type: text/vnd.tiddlywiki
 
+
 svg.tc-image-star { fill: gray ;}
 
 .nw-reveal-a > p { margin: 0 ;}
+
+xdiv.nw-reveal-a ~ p { margin: 0 ;}
+
+
+div.nw-document:hover {
+  background-color: #F0F8FF; 
+}
+
+/* Hides infernal P that is generated somehow */
+
+span.nw-editor + p { margin: 0 ;}
+span.nw-editor + p > p { margin: 0 ;}
 
 button.nw-menu-button {
 display: inline-block;width: unset;padding: 0;
@@ -27,7 +40,7 @@ div.nw-select + div.nw-document {
   margin-left: 5em ;
 }
 
-span.nw-reveal-1 > p, span.nw-reveal-2 > p  {
+xspan.nw-reveal-1 > p, span.nw-reveal-2 > p  {
 margin: 0px ;
 }
 
