@@ -1,5 +1,5 @@
 created: 20200528190017746
-modified: 20200704205648722
+modified: 20200704214841300
 tags: kit
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
@@ -63,19 +63,16 @@ type: text/vnd.tiddlywiki
 <$tiddler tiddler=<<temp-tiddler>> >
 {{||$:/core/ui/EditTemplate/body/editor}}
 </$tiddler>
-
-
-<$button class="mybuttons" >Close (delete)
-</$button> <!-- FINDME -->
-
+<!-- OLD CLOSE BUTTON POSITION -->
+<!-- FINDME -->
 <!-- ------------ Visual Break ---------------- -->
 <$reveal type="nomatch" state=<<state-editor-settings>> text="" >
 <div comment="THIS IS PSEUDO POPUP" class="nw-edit-settings tc-popup-keep tc-drop-down" >  
 <$button>Delete 
-<$action-deletetiddler $tiddler=<<currentTiddler>>/>
 <$action-listops $tiddler=<<maintag>> $field="list" $subfilter=<<current-remover>> />
 <$action-deletetiddler $tiddler=<<quali>>/>
 <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
+<$action-deletetiddler $tiddler=<<currentTiddler>>/>
 </$button> |
 <$button>Reset 
 <$action-setfield text={{!!reset}}/>
