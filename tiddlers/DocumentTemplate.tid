@@ -1,5 +1,5 @@
 created: 20200528190017746
-modified: 20200704002746038
+modified: 20200704205648722
 tags: kit
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
@@ -8,6 +8,7 @@ type: text/vnd.tiddlywiki
 \define qualify-restore-helper() <<qualify title:"""$:/temp/$(maintag)$/restore""" >>
 \define temp-tiddler() $:/temp/$(currentTiddler)$
 \define state-editor-settings() $:/state/editor-settings-$(currentTiddler)$
+\define state-editor-save() $:/state/editor-save-$(currentTiddler)$
 \define maintag-helper() [[$(maintag)$]] 
 \define current-remover() -[[$(currentTiddler)$]]
 \define filt-append() [list[$(maintag)$]] +[putafter:$(count)$<currentTiddler>]
@@ -31,13 +32,9 @@ type: text/vnd.tiddlywiki
 </$tiddler>
 </$linkcatcher>
 </$reveal>
-<$reveal state=<<quali>> type="match" text="edit" class="nw-editor" tag="div"><span class=nw-edit-control ><$button class="tc-btn-invisible" popup=<<state-editor-settings>> >{{$:/core/images/options-button}}</$button></span>
-<$tiddler tiddler=<<temp-tiddler>> ><!-- FINDME -->
-{{||$:/core/ui/EditTemplate/body/editor}}
-</$tiddler>
-
-
-<$button class="mybuttons" >Close
+<$reveal state=<<quali>> type="match" text="edit" class="nw-editor" tag="div">
+<span class="nw-edit-control" ><$button class="tc-btn-invisible"  >{{$:/core/images/done-button}}
+<!-- ACTIONS FOR CLOSE BUTTON -->
 <$reveal stateTitle=<<currentTiddler>> stateField="nosplit" type="nomatch" text="nosplit" >
 <$list filter="[<temp-tiddler>get[text]splitregexp[\n\n]!is[blank]butfirst[]]" variable="frazon">
 <$action-createtiddler 
@@ -60,10 +57,20 @@ type: text/vnd.tiddlywiki
 </$reveal>
 <$action-deletetiddler $tiddler=<<quali>>/>
 <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
-</$button> | <!-- FINDME -->
+</$button>
+<br/>
+<$button class="tc-btn-invisible" popup=<<state-editor-settings>> >{{$:/core/images/options-button}}</$button></span>
+<$tiddler tiddler=<<temp-tiddler>> >
+{{||$:/core/ui/EditTemplate/body/editor}}
+</$tiddler>
 
-<$reveal type="popup" state=<<state-editor-settings>> class="nw-edit-settings tc-popup-keep" style="left: unset; right: 2em;" positionAllowNegative="yes" position="right">
 
+<$button class="mybuttons" >Close (delete)
+</$button> <!-- FINDME -->
+
+<!-- ------------ Visual Break ---------------- -->
+<$reveal type="nomatch" state=<<state-editor-settings>> text="" >
+<div comment="THIS IS PSEUDO POPUP" class="nw-edit-settings tc-popup-keep tc-drop-down" >  
 <$button>Delete 
 <$action-deletetiddler $tiddler=<<currentTiddler>>/>
 <$action-listops $tiddler=<<maintag>> $field="list" $subfilter=<<current-remover>> />
@@ -77,7 +84,7 @@ type: text/vnd.tiddlywiki
 <$checkbox field="nosplit" checked="nosplit" unchecked=""/> No split |
 <$link>Link</$link>
 <br/>
-<!-- ------------ Visual Break ---------------- -->
+
 <$wikify text=<<qualify-restore-helper>> name="rest-tid">
 <$vars 
   vsn-cap-fld={{{[[1]][<rest-tid>get[text]] +[!is[blank]last[]addprefix[vsn-cap-]]}}}
@@ -96,6 +103,7 @@ or
   <option value=<<nw-item>>><<nw-item>></option>
 </$list>
 </$select>
+<br/>
 <$edit-text 
   field=<<vsn-cap-fld>> 
   size=40
@@ -104,6 +112,7 @@ or
 />
 </$vars>
 </$wikify>
+</div> <!-- END OF PSEUDO POPUP -->
 </$reveal> <!-- END OF POPUP EDIT CONTROLS --> 
 </$reveal> <!-- END OF EDIT MODE -->
 </$wikify>

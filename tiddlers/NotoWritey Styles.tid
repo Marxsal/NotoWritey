@@ -1,9 +1,8 @@
 created: 20200525034100646
-modified: 20200703231739048
+modified: 20200704195322248
 tags: $:/tags/Stylesheet kit
 title: NotoWritey Styles
 type: text/vnd.tiddlywiki
-
 
 svg.tc-image-star { fill: gray ;}
 
@@ -31,7 +30,20 @@ xdiv.nw-reveal-a ~ p { margin: 0 ;}
     width: min-content;
     border-radius: 1em;
 }
-		
+
+.nw-edit-settings  a,
+div.nw-edit-settings  button,
+.nw-edit-settings label,
+.nw-edit-settings select,
+.nw-edit-settings input
+{
+display: inline-block ;
+width: unset ;
+margin-bottom: .25em ;
+}
+
+
+
 div.nw-document:hover {
   background-color: #F0F8FF; 
 }
