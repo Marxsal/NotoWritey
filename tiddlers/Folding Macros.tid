@@ -1,0 +1,91 @@
+created: 20200531193641167
+modified: 20200705193752066
+tags: kit $:/tags/Macro
+title: Folding Macros
+type: text/vnd.tiddlywiki
+
+\define nw-first-50-chars(tid) <$set filter="[<__tid__>get[text]splitregexp[\n\n]!is[blank]first[]split[]limit[50]join[]]" name="char50"><<char50>></$set>
+\define indent(amt)
+<$action-setfield level=<<dent>> /><<hypo>>
+\end
+
+\define show-tiddler(tid)
+<$tiddler tiddler="""$tid$""">
+<div class="nw-select">
+<$button popup="$:/state/$tid$/popup" class="tc-btn-invisible"><$transclude tiddler="$:/core/images/menu-button-hamburg" mode="inline"/></$button>
+<$reveal type="popup" state="$:/state/$tid$/popup">
+<div class="tc-drop-down" style="min-width: 7em;">
+Level: <$text text={{{[[1]][all[current]get[level]]+[!is[blank]last[]]}}}/>   <br/>
+<div>
+<!-- ----------------- INDENT LEFT ---------------------- -->
+<$set filter="[{!!level}add[-1]max[1]]" name=dent select=0>
+<$button actions=<<indent>> class="tc-btn-invisible" style="display: inline-block;width: unset;padding:0;" tooltip="Indent left">{{$:/core/images/chevron-left}}</$button>
+</$set>
+<!-- ----------------- MOVE UP ---------------------- -->
+<$button class="tc-btn-invisible nw-menu-button"  tooltip="Move Up">{{$:/core/images/chevron-up}}
+<$action-listops $tiddler=<<maintag>> $filter="[list<maintag>move:-1<__tid__>]" />
+</$button>
+<!-- ----------------- MOVE DOWN ---------------------- -->
+<$button class="tc-btn-invisible nw-menu-button"  tooltip="Move Down">{{$:/core/images/chevron-down}}
+<$action-listops $tiddler=<<maintag>> $filter="[list<maintag>move:1<__tid__>]" />
+</$button>
+<!-- ----------------- INDENT RIGHT ---------------------- -->
+<$set filter="[{!!level}add[1]min[5]]" name=dent select=0>
+<$button actions=<<indent>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" tooltip="Indent right">{{$:/core/images/chevron-right}}</$button>
+</$set>
+</div>
+<!-- -------------------- BOOKMARKS -------------- -->
+<$wikify text=<<nw-bookmark-tag>> name="bookmark">
+<$fieldmangler>
+<$list filter="[all[current]!tag<bookmark>]" variable="dum">
+<$vars starcolor="gray">
+<$button message="tm-add-tag" param=<<bookmark>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" 
+tooltip="Set bookmark" 
+>{{||$:/images/nw/star-solid}} (<<bookmark>>)
+</$button>
+</$vars>
+</$list>
+<$list filter="[all[current]tag<bookmark>]" variable="dum">
+<$vars starcolor="yellow">
+<$button message="tm-remove-tag" param=<<bookmark>> class="tc-btn-invisible nw-menu-button" xstyle="display: inline-block;width: unset;padding: 0;" 
+tooltip="Remove bookmark" 
+>{{||$:/images/nw/star-solid}} (<<bookmark>>)</$button>
+</$vars>
+</$list>
+</$fieldmangler>
+</$wikify>
+
+<!-- ----------------- MOVE TO ---------------------- -->
+<br/>
+<$button class="tc-btn-invisible nw-menu-button" tooltip="Move one or more tiddlers somewhere in the document." >Move &gt;
+<$action-setfield $tiddler="MoveSelection"
+  tiddler="""$tid$"""
+	tag=<<maintag>> />
+<$action-sendmessage $message="tm-modal" $param="MoveSelection"/>
+</$button>
+
+</div>
+</$reveal>
+
+<$reveal type="nomatch" stateTitle=<<currentTiddler>> stateField="fold" text="yes">
+<$button class="tc-btn-invisible" setTitle=<<currentTiddler>> setField="fold" setTo="yes"><$transclude tiddler="$:/core/images/fold-button-minus" mode="inline"/></$button>
+</$reveal>
+
+<$reveal type="match" stateTitle=<<currentTiddler>> stateField="fold" text="yes">
+<$button class="tc-btn-invisible" setTitle=<<currentTiddler>> setField="fold" setTo="no"><$transclude tiddler="$:/core/images/unfold-button-plus" mode="inline"/></$button>
+</$reveal>
+
+</div><!-- END OF CLASS NW-SELECT -->
+<div class={{{[[1]][all[current]get[level]]+[!is[blank]last[]addprefix[nw-level-]]}}} >
+<$link tag="div"
+class="nw-document tc-document-tiddler-link tc-document-tiddler tc-tiddlylink tc-tiddlylink-resolves"
+><$transclude mode=block />
+</$link>
+</div>
+</$tiddler>
+\end
+
+
+
+
+<<foldstatus "covid19" "My First Tiddler Series II 2" "My First Tiddler Series II 2" >>
