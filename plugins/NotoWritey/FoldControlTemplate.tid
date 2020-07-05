@@ -1,14 +1,20 @@
 created: 20200701185617174
-modified: 20200702235432557
+modified: 20200704233921385
 tags: kit
 title: FoldControlTemplate
 type: text/vnd.tiddlywiki
 
+<$list filter="""[<ntid>is[missing]]""" >
+   <$vars ntid  = {{{[list<tagname>after<ntid>]}}} >
+	 <$transclude tiddler="FoldControlTemplate" mode=inline />
+	 </$vars>
+</$list>
+<$list filter="""[<ntid>!is[missing]]""" >
+<$tiddler tiddler=<<ntid>>>
 <$vars 
-  ctid = <<currentTiddler>>
 	clevel = {{!!level}}
 	cfold = {{!!fold}}
-  ntid  = {{{[list<tagname>after<currentTiddler>]}}}
+  ntid  = {{{[list<tagname>after<ntid>]}}}
 >
 <!--
 CALLED WITH 
@@ -19,22 +25,22 @@ CALLED WITH
 <$list filter="[<rlevel>compare:number:lt<clevel>]" variable="dummy">
 	    <!-- $reveal text=<<rfold>> type="match" default="yes" -->
 			<$list filter="[<rfold>compare:string:eq[yes]]" variable="dummy">
-			  <$tiddler tiddler=<<ntid>> >
+			  <!-- tiddler tiddler=<<ntid>> -->
 			  <!-- NO DISPLAY of <<ntid>> <br/> -->
 				<$list filter="[<ntid>!regexp[^$]]" variable="dummy">
 			   <$transclude tiddler="FoldControlTemplate" mode=inline />
 				 </$list>
-			  </$tiddler>
+			  <!-- /$tiddler -->
 			</$list>
 			<!-- $reveal text=<<rfold>> type="match" default="no" -->
 			<$list filter="[<rfold>compare:string:eq[no]]" variable="dummy">
 					 <$transclude tiddler="DocumentTemplate" />
 			   <$vars rfold=<<cfold>> rlevel=<<clevel>>  >
-			     <$tiddler tiddler=<<ntid>> >
+			     <!-- $tiddler tiddler=<<ntid>> -->
 					 <$list filter="[<ntid>!regexp[^$]]" variable="dummy">
 				     <$transclude tiddler="FoldControlTemplate" mode=inline />
 					 </$list>
-			     </$tiddler>
+			     <!-- /$tiddler -->
 				 </$vars>
 			</$list>
 </$list>
@@ -42,11 +48,13 @@ CALLED WITH
 	<$list filter="[<rlevel>compare:number:gteq<clevel>]" variable="dummy">
 	<$transclude tiddler="DocumentTemplate" mode="inline"/>
 			<$vars rlevel=<<clevel>> rfold=<<cfold>> >
-			<$tiddler tiddler=<<ntid>> >
+			<!-- $tiddler tiddler=<<ntid>> -->
 			<$list filter="[<ntid>!regexp[^$]]" variable="dummy">
 			  <$transclude tiddler="FoldControlTemplate" mode=inline />
 			</$list>
-			</$tiddler>
+			<!-- /$tiddler -->
 			</$vars>
 	</$list>
 </$vars>
+</$tiddler>	
+</$list><!-- ntid NOT MISSING -->

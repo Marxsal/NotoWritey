@@ -1,15 +1,47 @@
 created: 20200525034100646
-modified: 20200702235935122
+modified: 20200704195322248
 tags: $:/tags/Stylesheet kit
 title: NotoWritey Styles
 type: text/vnd.tiddlywiki
-
 
 svg.tc-image-star { fill: gray ;}
 
 .nw-reveal-a > p { margin: 0 ;}
 
 xdiv.nw-reveal-a ~ p { margin: 0 ;}
+
+.nw-edit-control {
+ position: absolute;
+ right: -2em;
+ xborder: solid 2px;
+ top: 0.1em ;
+ z-index: 1;
+}
+
+.nw-edit-settings {
+    right: -0.5em !important;
+    position: absolute;
+    z-index: 2;
+    top: 0.9em;
+    opacity: 1;
+    background-color: antiquewhite;
+    padding: 0.9em;
+    border: solid lightblue;
+    width: min-content;
+    border-radius: 1em;
+}
+
+.nw-edit-settings  a,
+div.nw-edit-settings  button,
+.nw-edit-settings label,
+.nw-edit-settings select,
+.nw-edit-settings input
+{
+display: inline-block ;
+width: unset ;
+margin-bottom: .25em ;
+}
+
 
 
 div.nw-document:hover {
@@ -18,8 +50,11 @@ div.nw-document:hover {
 
 /* Hides infernal P that is generated somehow */
 
-span.nw-editor + p { margin: 0 ;}
-span.nw-editor + p > p { margin: 0 ;}
+div.nw-editor + p { margin: 0 ;}
+div.nw-editor + p > p { margin: 0 ;}
+
+/* Make relative So we can have a button floating to the right */
+.nw-editor {position: relative; }
 
 button.nw-menu-button {
 display: inline-block;width: unset;padding: 0;
