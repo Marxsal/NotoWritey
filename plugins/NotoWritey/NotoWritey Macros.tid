@@ -1,5 +1,5 @@
 created: 20200525034606174
-modified: 20200704231040793
+modified: 20200706200433282
 tags: $:/tags/Macro kit
 title: NotoWritey Macros
 type: text/vnd.tiddlywiki
@@ -7,6 +7,7 @@ type: text/vnd.tiddlywiki
 \define default-name() $(currentTiddler)$-YOUR-ID-HERE
 \define nw-bookmark-tiddler() :/config/nw/$(tagname)$
 \define nw-bookmark-tag() {{:/config/nw/$(tagname)$}}
+\define nw-publish-mode() $:/state/mas/nw/publish-$(tagname)$
 \define notag(tag) 
 <$vars lb="[[" rb="]]">
 
@@ -46,7 +47,7 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 \end
 
 
-\define noto2(tag)
+\define noto2-delete-maybe(tag)
 <$list filter="[title<__tag__>has[list]]" emptyMessage=<<notag """$tag$""">>>
 <$vars maintag="""$tag$""">
 <$list filter="[tag<maintag>]" template="EditorViewTemplate"/>
@@ -70,12 +71,17 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 \define noto(tag)
 <$set filter="""[<currentTiddler>] [<__tag__>] +[!is[blank]last[]]""" name="tagname" select=0 >
 <$list filter="[title<tagname>has[list]]" emptyMessage=<<notag>>>
-<$vars maintag=<<tagname>> rlevel="1" rfold="no"  >
+<$vars maintag=<<tagname>> 
+    rlevel="1" rfold="no"  
+		nw-orig-tiddler=<<currentTiddler>>
+		>
 <$list filter="[tag<maintag>first[]]" template="FoldControlTemplate" variable="ntid"/>
 </$vars>
 </$list>
 
 <div class="nw-settings" >
+<$reveal type="nomatch" state=<<nw-publish-mode>> text="show">
+
 
 <hr style="border-width:2px;margin-bottom:0px;" /><h3 style="background-color: lightcyan;text-align:center;margin:0px;line-height:1.5em" > ~NotoWritey Settings </h3><hr style="border-width:2px;margin-top:0px;" />
 
@@ -123,6 +129,15 @@ Copy HTML to tiddler {{$:/temp/nw-export-tid}}
 <$button>Backup Tiddler Order
 <$action-listops $tiddler=<<tagname>> $field="nw-list-backup" $filter="[list<tagname>]" />
 </$button>
+
+<$button set=<<nw-publish-mode>> setTo="show">Reading/Publication Mode</$button>
+-- Warning! This will hide these controls! Hover over bottom of document and click to restore!
+<<suppress-folding>>
+</$reveal>
+
+<$reveal type="match" state=<<nw-publish-mode>> text="show">
+<$button class="nw-invisible-settings tc-btn-invisible" set=<<nw-publish-mode>> setTo="hide" />
+</$reveal>
 
 </div>
 </$set>

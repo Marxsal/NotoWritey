@@ -1,14 +1,20 @@
 created: 20200525034100646
-modified: 20200704195322248
+modified: 20200706193302365
 tags: $:/tags/Stylesheet kit
 title: NotoWritey Styles
 type: text/vnd.tiddlywiki
 
 svg.tc-image-star { fill: gray ;}
 
-.nw-reveal-a > p { margin: 0 ;}
+.nw-invisible-settings {
+width: 100%;
+height: 50px ;
 
-xdiv.nw-reveal-a ~ p { margin: 0 ;}
+}
+
+.nw-invisible-settings:hover {
+background-color: lightgreen ;
+}
 
 .nw-edit-control {
  position: absolute;
@@ -44,7 +50,7 @@ margin-bottom: .25em ;
 
 
 
-div.nw-document:hover {
+div.nw-document-click:hover {
   background-color: #F0F8FF; 
 }
 
@@ -60,30 +66,30 @@ button.nw-menu-button {
 display: inline-block;width: unset;padding: 0;
 }
 
-.nw-select {
-float: left;
-margin-right: 0.4em;
-width: 4em ;
+
+.nw-reveal-a > p { 
+  margin: 0 ; 
 }
 
-div.nw-select > span.tc-popup > div.tc-drop-down {
-padding: 7px ;
+.nw-reveal-a {
+    display: flex;
+    flex-direction: row ;
+    align-items: flex-start ;
+		align-content: flex-start ;
 }
 
 div.nw-select + p { margin-top: 0 ; }
-div.nw-select + div.nw-document { 
-  margin-left: 5em ;
+
+.nw-select {
+  flex: 0 0 3em ;
 }
 
-xspan.nw-reveal-1 > p, span.nw-reveal-2 > p  {
-margin: 0px ;
-}
-
-div.nw-level-1  div.nw-document { margin-left: 5em ; }
-div.nw-level-2  div.nw-document { margin-left: 7em ; }
-div.nw-level-3  div.nw-document { margin-left: 9em ; }
-div.nw-level-4  div.nw-document { margin-left: 11em ; }
-div.nw-level-5  div.nw-document { margin-left: 13em ; }
+div.nw-level-1 { margin-left: 0em ; }
+div.nw-level-2 { margin-left: 2em ; }
+div.nw-level-3 { margin-left: 4em ; }
+div.nw-level-4 { margin-left: 6em ; }
+div.nw-level-5 { margin-left: 8em ; }
+div.nw-level-6 { margin-left: 10em ; }
 
 .nw-document p ,
 .nw-document code ,
