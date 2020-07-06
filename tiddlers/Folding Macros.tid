@@ -1,9 +1,33 @@
 created: 20200531193641167
-modified: 20200705193752066
+modified: 20200706211349074
 tags: kit $:/tags/Macro
 title: Folding Macros
 type: text/vnd.tiddlywiki
 
+\define link-switch()
+<$list filter="[<nw-publish-mode>get[text]match[show]]" variable="dummy1">
+<div  class="nw-document" 
+><$transclude mode=block />
+</div>
+</$list>
+<$list filter="[<nw-publish-mode>is[missing]]~[<nw-publish-mode>get[text]!match[show]]" variable="dummy2" >
+<$link tag="div" class="nw-document nw-document-click" 
+><$transclude mode=block />
+</$link>
+</$list>
+\end
+\define link-switch-delete(twtag:"$link" tag:"div" class:"nw-document")
+<$twtag$ tag="$tag$" overrideClass="$class$" class="$class$" 
+><$transclude mode=block />
+</$twtag$>
+\end
+
+\define suppress-folding()
+<$list filter="[<nw-publish-mode>get[text]match[show]]" >
+display: none;
+</$list>
+\end
+\define delete-this-note-2020-07-06() xxclass="nw-document tc-document-tiddler-link tc-document-tiddler tc-tiddlylink tc-tiddlylink-resolves"
 \define nw-first-50-chars(tid) <$set filter="[<__tid__>get[text]splitregexp[\n\n]!is[blank]first[]split[]limit[50]join[]]" name="char50"><<char50>></$set>
 \define indent(amt)
 <$action-setfield level=<<dent>> /><<hypo>>
@@ -11,7 +35,8 @@ type: text/vnd.tiddlywiki
 
 \define show-tiddler(tid)
 <$tiddler tiddler="""$tid$""">
-<div class="nw-select">
+<$wikify text=<<suppress-folding>> name="sf">
+<div class="nw-select" style=<<sf>> >
 <$button popup="$:/state/$tid$/popup" class="tc-btn-invisible"><$transclude tiddler="$:/core/images/menu-button-hamburg" mode="inline"/></$button>
 <$reveal type="popup" state="$:/state/$tid$/popup">
 <div class="tc-drop-down" style="min-width: 7em;">
@@ -77,11 +102,11 @@ tooltip="Remove bookmark"
 
 </div><!-- END OF CLASS NW-SELECT -->
 <div class={{{[[1]][all[current]get[level]]+[!is[blank]last[]addprefix[nw-level-]]}}} >
-<$link tag="div"
-class="nw-document tc-document-tiddler-link tc-document-tiddler tc-tiddlylink tc-tiddlylink-resolves"
-><$transclude mode=block />
-</$link>
+<!-- We want to sometimes switch which tag we're using -->
+<!-- nw-document-click -->
+<$macrocall $name=link-switch  />
 </div>
+</$wikify>
 </$tiddler>
 \end
 
