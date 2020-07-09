@@ -1,13 +1,27 @@
 created: 20200525034606174
-modified: 20200706200433282
+modified: 20200709230657509
 tags: $:/tags/Macro kit
 title: NotoWritey Macros
 type: text/vnd.tiddlywiki
 
 \define default-name() $(currentTiddler)$-YOUR-ID-HERE
+\define nw-zip-package() $:/temp//nw-zip-file/$(tagname)$
 \define nw-bookmark-tiddler() :/config/nw/$(tagname)$
 \define nw-bookmark-tag() {{:/config/nw/$(tagname)$}}
 \define nw-publish-mode() $:/state/mas/nw/publish-$(tagname)$
+
+\define ziptid(filter: "[all[tiddlers]]" , output: "tiddlers.zip" ,  dir: "")
+<$action-sendmessage $message="tm-zip-create" $param=<<nw-zip-package>>/>
+<$vars sys="$:/" >
+<$list filter="""$filter$""">
+<$vars fname={{{[<currentTiddler>split<sys>join[_]split[/]join[_]addsuffix[.tid]addprefix[$dir$]] }}} >
+<$action-sendmessage $message="tm-zip-render-file" $param=<<nw-zip-package>> filename=<<fname>> tiddler=<<currentTiddler>> template="$:/core/templates/tid-tiddler" mode="block" output="text/plain"/>
+</$vars>
+</$list>
+<$action-sendmessage $message="tm-zip-download" $param=<<nw-zip-package>> filename="""$output$"""/>
+</$vars>
+\end
+
 \define notag(tag) 
 <$vars lb="[[" rb="]]">
 
@@ -98,33 +112,94 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
   default="Edit this tag name or it won't work. Sorry."
 />
 
-''Export to tiddler:'' <$edit-text 
-  tiddler="$:/temp/nw-export-tid" 
+----
+
+!!! Export/Backup Options
+<!-- Bookmark @a -->
+''Export Type'': 
+<$checkbox tiddler="""$tag$""" field=export-type checked="clipboard" /> Clipboard
+<$checkbox tiddler="""$tag$""" field=export-type checked="tiddler" /> Tiddler
+<$checkbox tiddler="""$tag$""" field=export-type checked="zip" /> Backup to Zip file
+<br/>
+
+<$reveal stateTitle="""$tag$""" stateField=export-type text="zip" type="nomatch">
+''Output Type'': 
+<$checkbox tiddler="""$tag$""" field=output-type checked="html" /> HTML
+<$checkbox tiddler="""$tag$""" field=output-type checked="wikitext" /> Wikitext
+<$checkbox tiddler="""$tag$""" field=output-type checked="text" /> Text
+<br/>
+</$reveal>
+
+<$reveal stateTitle="""$tag$""" stateField=export-type text="clipboard" type="nomatch">
+''Export to tiddler/file:'' <$edit-text 
+  tiddler="""$tag$""" 
+	field=tidorfile
   size=40 
   tag="input"
   default="Edit this field"
 />
+</$reveal>
 
+<$reveal stateTitle="""$tag$""" stateField=output-type text="wikitext" type="match"> 
 <$wikify text="""<<compile-w>>""" name="compiled">
+<$reveal stateTitle="""$tag$""" stateField=export-type text="clipboard" type="match">
 <$button message="tm-copy-to-clipboard" param=<<compiled>> >
 Copy wikitext to clipboard
 </$button>
+</$reveal>
+<$reveal stateTitle="""$tag$""" stateField=export-type text="tiddler" type="match">
 <$button>
-Copy wikitext to tiddler {{$:/temp/nw-export-tid}}
-<$action-setfield $tiddler={{$:/temp/nw-export-tid}} $field="text" $value=<<compiled>> />
+Copy wikitext to tiddler {{$tag$!!tidorfile}}
+<$action-setfield $tiddler={{$tag$!!tidorfile}} $field="text" $value=<<compiled>> />
 </$button>
+</$reveal>
 <p></p>
 </$wikify>
+</$reveal>
 
+<!-- Bookmark @b -->
 <$wikify text="""<<compile-h>>""" name="compiled" output="html">
+<$reveal stateTitle="""$tag$""" stateField=output-type text="html" type="match"> 
+<$reveal stateTitle="""$tag$""" stateField=export-type text="clipboard" type="match">
 <$button message="tm-copy-to-clipboard" param=<<compiled>> >
 Copy HTML to clipboard
 </$button>
+</$reveal>
+<$reveal stateTitle="""$tag$""" stateField=export-type text="tiddler" type="match">
 <$button >
-Copy HTML to tiddler {{$:/temp/nw-export-tid}}
-<$action-setfield $tiddler={{$:/temp/nw-export-tid}} $field="text" $value=<<compiled>> />
+Copy HTML to tiddler  {{$tag$!!tidorfile}}
+<$action-setfield $tiddler={{$tag$!!tidorfile}} $field="text" $value=<<compiled>> />
 </$button>
+</$reveal>
+</$reveal>
 </$wikify>
+
+<!--  plain text -->
+<$wikify text="""<<compile-h>>""" name="compiled" output="text">
+<$reveal stateTitle="""$tag$""" stateField=output-type text="text" type="match"> 
+<$reveal stateTitle="""$tag$""" stateField=export-type text="clipboard" type="match">
+<$button message="tm-copy-to-clipboard" param=<<compiled>> >
+Copy HTML to clipboard
+</$button>
+</$reveal>
+<$reveal stateTitle="""$tag$""" stateField=export-type text="tiddler" type="match">
+<$button >
+Copy HTML to tiddler  {{$tag$!!tidorfile}}
+<$action-setfield $tiddler={{$tag$!!tidorfile}} $field="text" $value=<<compiled>> />
+</$button>
+</$reveal>
+</$reveal>
+</$wikify>
+
+<!-- insert new zip file here bookmark @c -->
+<$reveal stateTitle="""$tag$""" stateField=export-type text="zip" type="match">
+<$button >
+Backup to zip file:  {{$tag$!!tidorfile}}
+<$macrocall $name=ziptid filter="[tag[$tag$]] [[$tag$]]" output={{$tag$!!tidorfile}} dir="tiddlers/" /> 
+</$button>
+</$reveal>
+
+--------------------------------
 
 <$button>Backup Tiddler Order
 <$action-listops $tiddler=<<tagname>> $field="nw-list-backup" $filter="[list<tagname>]" />

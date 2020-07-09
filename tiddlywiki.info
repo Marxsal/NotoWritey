@@ -3,6 +3,7 @@
     "plugins": [
         "tiddlywiki/tiddlyweb",
         "tiddlywiki/filesystem",
+        "tiddlywiki/jszip",
         "tiddlywiki/highlight"
 
     ],
