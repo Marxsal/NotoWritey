@@ -1,5 +1,5 @@
 created: 20200525034606174
-modified: 20200709230657509
+modified: 20200711033617751
 tags: $:/tags/Macro kit
 title: NotoWritey Macros
 type: text/vnd.tiddlywiki
@@ -88,6 +88,7 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 <$vars maintag=<<tagname>> 
     rlevel="1" rfold="no"  
 		nw-orig-tiddler=<<currentTiddler>>
+		nw-splitby={{{ [[$tag$]get[nw-splitby]]~[[\n\n]]}}}
 		>
 <$list filter="[tag<maintag>first[]]" template="FoldControlTemplate" variable="ntid"/>
 </$vars>
@@ -104,12 +105,20 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 </$tiddler>
 |
 ''Show Editor Toolbar'': <$checkbox tiddler="$:/config/notowritey/editor-toolbar/visibility" field="text" checked="show" unchecked="hide" default="show"/> 
-<br/> 
+
 ''Tag for bookmarks:'' <$edit-text 
   tiddler=<<nw-bookmark-tiddler>> 
   size=20 
   tag="input"
   default="Edit this tag name or it won't work. Sorry."
+/>
+
+''Regexp for splitting:'' <$edit-text 
+  tiddler=<<tagname>> 
+	field="nw-splitby"
+  size=30 
+  tag="input"
+  placeholder="\n\n"
 />
 
 ----
