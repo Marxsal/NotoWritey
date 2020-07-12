@@ -1,5 +1,5 @@
 created: 20200531193641167
-modified: 20200706211349074
+modified: 20200711224834593
 tags: kit $:/tags/Macro
 title: Folding Macros
 type: text/vnd.tiddlywiki
@@ -23,7 +23,7 @@ type: text/vnd.tiddlywiki
 \end
 
 \define suppress-folding()
-<$list filter="[<nw-publish-mode>get[text]match[show]]" >
+<$list filter="[<tagname>get[nw-showfold]match[no]]" >
 display: none;
 </$list>
 \end
@@ -35,6 +35,7 @@ display: none;
 
 \define show-tiddler(tid)
 <$tiddler tiddler="""$tid$""">
+<!-- @a reference <<tagname>> $field="nw-folding" $value="no" -->
 <$wikify text=<<suppress-folding>> name="sf">
 <div class="nw-select" style=<<sf>> >
 <$button popup="$:/state/$tid$/popup" class="tc-btn-invisible"><$transclude tiddler="$:/core/images/menu-button-hamburg" mode="inline"/></$button>

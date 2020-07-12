@@ -1,5 +1,5 @@
 created: 20200525034606174
-modified: 20200711033617751
+modified: 20200711225118022
 tags: $:/tags/Macro kit
 title: NotoWritey Macros
 type: text/vnd.tiddlywiki
@@ -104,13 +104,15 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 <$transclude tiddler="$:/core/ui/TagTemplate" />
 </$tiddler>
 |
-''Show Editor Toolbar'': <$checkbox tiddler="$:/config/notowritey/editor-toolbar/visibility" field="text" checked="show" unchecked="hide" default="show"/> 
+''Show Fold Control'': <$checkbox tiddler=<<tagname>> field="nw-showfold" checked="yes" unchecked="no" default="yes"/> 
+|
+''Show Edit Toolbar'': <$checkbox tiddler="$:/config/notowritey/editor-toolbar/visibility" field="text" checked="show" unchecked="hide" default="show"/> 
 
 ''Tag for bookmarks:'' <$edit-text 
   tiddler=<<nw-bookmark-tiddler>> 
   size=20 
   tag="input"
-  default="Edit this tag name or it won't work. Sorry."
+  default="Edit This!"
 />
 
 ''Regexp for splitting:'' <$edit-text 
@@ -124,7 +126,6 @@ This button will set up initial tiddler and initialize tiddler <code><<tagname>>
 ----
 
 !!! Export/Backup Options
-<!-- Bookmark @a -->
 ''Export Type'': 
 <$checkbox tiddler="""$tag$""" field=export-type checked="clipboard" /> Clipboard
 <$checkbox tiddler="""$tag$""" field=export-type checked="tiddler" /> Tiddler
@@ -214,13 +215,17 @@ Backup to zip file:  {{$tag$!!tidorfile}}
 <$action-listops $tiddler=<<tagname>> $field="nw-list-backup" $filter="[list<tagname>]" />
 </$button>
 
-<$button set=<<nw-publish-mode>> setTo="show">Reading/Publication Mode</$button>
+<$button set=<<nw-publish-mode>> setTo="show">Reading/Publication Mode
+<$action-setfield $tiddler=<<tagname>> $field="nw-showfold" $value="no"/> 
+</$button>
 -- Warning! This will hide these controls! Hover over bottom of document and click to restore!
 <<suppress-folding>>
 </$reveal>
 
 <$reveal type="match" state=<<nw-publish-mode>> text="show">
-<$button class="nw-invisible-settings tc-btn-invisible" set=<<nw-publish-mode>> setTo="hide" />
+<$button class="nw-invisible-settings tc-btn-invisible" set=<<nw-publish-mode>> setTo="hide" >
+<$action-setfield $tiddler=<<tagname>> $field="nw-showfold" $value="yes"/>"
+</$button>
 </$reveal>
 
 </div>
