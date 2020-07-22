@@ -1,0 +1,6 @@
+title: $:/plugins/MAS/NotoWritey/versions
+caption: versions
+
+; Version 0.0.10
+: Added ability to combine a number of tiddler paragraphs into the current one.
+

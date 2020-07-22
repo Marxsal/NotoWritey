@@ -1,0 +1,14 @@
+[
+    {
+        "created": "20200629022811905",
+        "text": "For stand-alone ~TiddlyWiki, drag and drop the following plugin into your ~TiddlyWiki file:\n\n<<<\n$:/plugins/MAS/NotoWritey\n<<<\n\nFor node.js, you can find the plugin files at:\n\n<<<\nhttps://github.com/Marxsal/NotoWritey/tree/master/plugins/NotoWritey\n<<<\n\nAlso, for node.js, a patch is needed to allow multiple-line files to be stored correctly without corrupting your NW document. Drag,  drop and import these tiddlers into your TW file:\n\n* $:/core/modules/utils/filesystem.js\n* $:/plugins/tiddlywiki/filesystem/filesystemadaptor.js\n* $:/config/FileSystemExtensions\n\nHopefully at some point the core files will be patched and these modifications won't be needed. \n\nSome of the discussion regarding these changes can be found [[here|https://github.com/Jermolene/TiddlyWiki5/pull/4630]]",
+        "type": "text/vnd.tiddlywiki",
+        "title": "Documentation: How to use NotoWritey 2 1",
+        "tags": "Howto",
+        "modified": "20200722000443648",
+        "reset": "For stand-alone ~TiddlyWiki, drag and drop the following plugin into your ~TiddlyWiki file:\n\n<<<\n$:/plugins/MAS/NotoWritey\n<<<\n\nFor node.js, you can find the plugin files at:\n\n<<<\nhttps://github.com/Marxsal/NotoWritey/tree/master/plugins/NotoWritey\n<<<\n\nAlso, for node.js, a patch is needed to allow multiple-line files to be stored correctly without corrupting your NW document. Drag and drop these files:\n\n* $:/core/modules/utils/filesystem.js\n* $:/plugins/tiddlywiki/filesystem/filesystemadaptor.js\n* $:/config/FileSystemExtensions\n\nHopefully at some point the core files will be patched and these modifications won't be needed. \n\nSome of the discussion regarding these changes can be found [[here|https://github.com/Jermolene/TiddlyWiki5/pull/4630]]",
+        "nosplit": "nosplit",
+        "level": "2",
+        "fold": "no"
+    }
+]

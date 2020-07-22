@@ -1,11 +1,43 @@
 created: 20200528190017746
-modified: 20200711023622436
-tags: kit
+modified: 20200722000614179
+tags: kit $:/tags/Macro
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
 
 \define qualify-helper() <<qualify title:"""$:/temp/$(maintag)$""" >>
 \define qualify-restore-helper() <<qualify title:"""$:/temp/$(maintag)$/restore""" >>
+\define combine-number() $:/temp/$(currentTiddler)$/combine-number
+\define compile-next-x(curTid, num2comb: 1)
+<$wikify text="""
+<$macrocall $name='compile-next-x-helper' 
+  curTid="$curTid$" 
+  num2comb=$num2comb$
+/>
+""" name="compiled">
+<$action-setfield text={{{[<compiled>trim[]]}}}/>
+<$action-setfield $tiddler=<<temp-tiddler>> text={{{[<compiled>trim[]]}}}/>
+</$wikify>
+<$list filter="[<__num2comb__>add[1]]" variable="num2comb-plus">
+<$list filter="[list<tagname>allafter:include<__curTid__>nth<num2comb-plus>]" variable="marker">
+<$set name=array filter="[list<tagname>allafter<__curTid__>allbefore:include<marker>]" >
+<$list filter="[enlist<array>]" variable="deleteme">
+  <$action-deletetiddler $tiddler=<<deleteme>> />
+</$list>
+<$action-listops $tiddler=<<tagname>> $field="list" $subfilter="+[remove<array>]"/>
+</$set>
+</$list>
+</$list>
+\end
+\define compile-next-x-helper(curTid, num2comb: 1)
+<$list filter="[<__num2comb__>add[1]]" variable="num2comb-plus">
+<$list filter="[list<tagname>allafter:include<__curTid__>nth<num2comb-plus>]" variable="marker">
+<$list filter="[list<tagname>allafter:include<__curTid__>allbefore:include<marker>]" >
+<$view field="text" />
+</$list>
+</$list>
+</$list>
+<!-- FINDME b -->
+\end
 \define temp-tiddler() $:/temp/$(currentTiddler)$
 \define state-editor-settings() $:/state/editor-settings-$(currentTiddler)$
 \define state-editor-save() $:/state/editor-save-$(currentTiddler)$
@@ -55,6 +87,10 @@ type: text/vnd.tiddlywiki
 </$list>
 
 </$reveal>
+<$reveal stateTitle=<<currentTiddler>> stateField="nosplit" type="match" text="nosplit" >
+     <$action-setfield text={{{[<temp-tiddler>get[text]]}}}/>
+</$reveal>
+
 <$action-deletetiddler $tiddler=<<quali>>/>
 <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
 </$button>
@@ -64,7 +100,6 @@ type: text/vnd.tiddlywiki
 {{||$:/core/ui/EditTemplate/body/editor}}
 </$tiddler>
 <!-- OLD CLOSE BUTTON POSITION -->
-<!-- FINDME -->
 <!-- ------------ Visual Break ---------------- -->
 <$reveal type="nomatch" state=<<state-editor-settings>> text="" >
 <div comment="THIS IS PSEUDO POPUP" class="nw-edit-settings tc-popup-keep tc-drop-down" >  
@@ -75,7 +110,7 @@ type: text/vnd.tiddlywiki
 <$action-deletetiddler $tiddler=<<currentTiddler>>/>
 </$button> |
 <$button>Reset 
-<$action-setfield text={{!!reset}}/>
+<$action-setfield $tiddler=<<temp-tiddler>> text={{!!reset}}/>
 </$button>
 
 <$checkbox field="nosplit" checked="nosplit" unchecked=""/> No split |
@@ -94,7 +129,6 @@ or
 <$button>Rest. fm:
 <$action-setfield $field="text" $value={{{[all[current]get<vsn-fld>]}}}/>
 </$button> 
-<!-- FINDME -->	
 <$select tiddler=<<rest-tid>> default="1" >
 <$list filter="[range[1,5]]" variable="nw-item">
   <option value=<<nw-item>>><<nw-item>></option>
@@ -109,6 +143,24 @@ or
 />
 </$vars>
 </$wikify>
+<!-- FINDME a -->
+
+<br/> 
+Combine next 
+<$edit-text default=1 tiddler=<<combine-number>> size=5 tag="input"/>
+<!-- delete this section when sure
+<$select tiddler=<<combine-number>> default="1" >
+<$list filter="[range[1,9]]" variable="nw-item">
+  <option value=<<nw-item>>><<nw-item>></option>
+</$list>
+</$select> 
+-->
+<$button>Items
+<$macrocall $name='compile-next-x' 
+  curTid=<<currentTiddler>>
+  num2comb={{{[<combine-number>get[text]]}}}
+/>
+</$button>
 </div> <!-- END OF PSEUDO POPUP -->
 </$reveal> <!-- END OF POPUP EDIT CONTROLS --> 
 </$reveal> <!-- END OF EDIT MODE -->
