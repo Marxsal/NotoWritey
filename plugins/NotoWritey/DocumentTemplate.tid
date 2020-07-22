@@ -1,5 +1,5 @@
 created: 20200528190017746
-modified: 20200722000614179
+modified: 20200722182941982
 tags: kit $:/tags/Macro
 title: DocumentTemplate
 type: text/vnd.tiddlywiki
@@ -101,7 +101,7 @@ type: text/vnd.tiddlywiki
 </$tiddler>
 <!-- OLD CLOSE BUTTON POSITION -->
 <!-- ------------ Visual Break ---------------- -->
-<$reveal type="nomatch" state=<<state-editor-settings>> text="" >
+<$reveal type="popup" state=<<state-editor-settings>> text="" class="tc-popup-keep" position="belowleft" >
 <div comment="THIS IS PSEUDO POPUP" class="nw-edit-settings tc-popup-keep tc-drop-down" >  
 <$button>Delete 
 <$action-listops $tiddler=<<maintag>> $field="list" $subfilter=<<current-remover>> />

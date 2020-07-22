@@ -1,5 +1,5 @@
 created: 20200525034100646
-modified: 20200706193302365
+modified: 20200722192307054
 tags: $:/tags/Stylesheet kit
 title: NotoWritey Styles
 type: text/vnd.tiddlywiki
@@ -17,8 +17,9 @@ background-color: lightgreen ;
 }
 
 .nw-edit-control {
- position: absolute;
- right: -2em;
+ /* position: absolute; */
+ float: right ;
+ margin-right: -2em;
  xborder: solid 2px;
  top: 0.1em ;
  z-index: 1;
