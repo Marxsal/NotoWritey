@@ -1,5 +1,5 @@
 created: 20200531193641167
-modified: 20200711224834593
+modified: 20200723170616603
 tags: kit $:/tags/Macro
 title: Folding Macros
 type: text/vnd.tiddlywiki
@@ -94,7 +94,9 @@ tooltip="Remove bookmark"
 </$reveal>
 
 <$reveal type="nomatch" stateTitle=<<currentTiddler>> stateField="fold" text="yes">
+<$reveal default={{{[list<tagname>allafter<currentTiddler>first[]get[level]]}}} type="gt" text={{!!level}} >
 <$button class="tc-btn-invisible" setTitle=<<currentTiddler>> setField="fold" setTo="yes"><$transclude tiddler="$:/core/images/fold-button-minus" mode="inline"/></$button>
+</$reveal>
 </$reveal>
 
 <$reveal type="match" stateTitle=<<currentTiddler>> stateField="fold" text="yes">

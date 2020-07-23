@@ -2,7 +2,7 @@
   "title": "$:/plugins/MAS/NotoWritey",
   "description": "Editor and outliner for TiddlyWiki",
   "author": "MAS",
-  "version": "0.0.10a",
+  "version": "0.0.11",
   "core-version": ">=5.1.22",
   "source": "",
   "list": "readme versions",
